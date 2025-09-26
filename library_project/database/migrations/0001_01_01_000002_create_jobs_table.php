@@ -3,6 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -21,6 +23,31 @@ return new class extends Migration
             $table->unsignedInteger('created_at');
         });
 
+        DB::table('jobs')->insert([
+            'queue' => 'emails1',
+            'payload' => json_encode(['task' => 'send_welcome_email', 'user_id' => 1]),
+            'attempts' => 0,
+            'reserved_at' => null,
+            'available_at' => time(),
+            'created_at' => time(),
+        ]);
+        DB::table('jobs')->insert([
+            'queue' => 'emails2',
+            'payload' => json_encode(['task' => 'send_welcome_email', 'user_id' => 1]),
+            'attempts' => 0,
+            'reserved_at' => null,
+            'available_at' => time(),
+            'created_at' => time(),
+        ]);
+        DB::table('jobs')->insert([
+            'queue' => 'emails3',
+            'payload' => json_encode(['task' => 'send_welcome_email', 'user_id' => 1]),
+            'attempts' => 0,
+            'reserved_at' => null,
+            'available_at' => time(),
+            'created_at' => time(),
+        ]);
+
         Schema::create('job_batches', function (Blueprint $table) {
             $table->string('id')->primary();
             $table->string('name');
@@ -34,6 +61,19 @@ return new class extends Migration
             $table->integer('finished_at')->nullable();
         });
 
+        DB::table('job_batches')->insert([
+            'id' => (string) Str::uuid(),
+            'name' => 'Felhasználó email batch',
+            'total_jobs' => 1,
+            'pending_jobs' => 0,
+            'failed_jobs' => 0,
+            'failed_job_ids' => '[]',
+            'options' => null,
+            'cancelled_at' => null,
+            'created_at' => time(),
+            'finished_at' => null,
+        ]);
+
         Schema::create('failed_jobs', function (Blueprint $table) {
             $table->id();
             $table->string('uuid')->unique();
@@ -43,6 +83,14 @@ return new class extends Migration
             $table->longText('exception');
             $table->timestamp('failed_at')->useCurrent();
         });
+
+        DB::table('failed_jobs')->insert([
+            'uuid' => (string) Str::uuid(),
+            'connection' => 'database',
+            'queue' => 'emails',
+            'payload' => json_encode(['task' => 'send_notification', 'user_id' => 2]),
+            'exception' => 'Teszt exception üzenet',
+        ]);
     }
 
     /**

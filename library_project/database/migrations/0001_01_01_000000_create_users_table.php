@@ -23,7 +23,17 @@ return new class extends Migration
         });
         User::create([
             'name'=>"Bori",
-            "email"=>"ilyes.bori@g,ail.com",
+            "email"=>"ilyes.bori@gmail.com",
+            "password"=>"teszt123",
+        ]);
+        User::create([
+            'name'=>"András",
+            "email"=>"fabuAndras@gmail.com",
+            "password"=>"teszt123",
+        ]);
+        User::create([
+            'name'=>"Kristof",
+            "email"=>"Kristrof666@gmail.com",
             "password"=>"teszt123",
         ]);
 
